@@ -1,7 +1,20 @@
+import json
+
 from flask_restful import fields
 
 from fields.workflow_fields import workflow_partial_fields
 from libs.helper import AppIconUrlField, TimestampField
+
+
+class JsonStringField(fields.Raw):
+    def format(self, value):
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except (json.JSONDecodeError, TypeError):
+                return value
+        return value
+
 
 app_detail_kernel_fields = {
     "id": fields.String,
@@ -100,6 +113,8 @@ app_partial_fields = {
     "updated_at": TimestampField,
     "tags": fields.List(fields.Nested(tag_fields)),
     "access_mode": fields.String,
+    "create_user_name": fields.String,
+    "author_name": fields.String,
 }
 
 
@@ -173,6 +188,7 @@ app_detail_fields_with_site = {
     "site": fields.Nested(site_fields),
     "api_base_url": fields.String,
     "use_icon_as_answer_icon": fields.Boolean,
+    "max_active_requests": fields.Integer,
     "created_by": fields.String,
     "created_at": TimestampField,
     "updated_by": fields.String,
@@ -215,4 +231,15 @@ app_import_fields = {
 
 app_import_check_dependencies_fields = {
     "leaked_dependencies": fields.List(fields.Nested(leaked_dependency_fields)),
+}
+
+app_server_fields = {
+    "id": fields.String,
+    "name": fields.String,
+    "server_code": fields.String,
+    "description": fields.String,
+    "status": fields.String,
+    "parameters": JsonStringField,
+    "created_at": TimestampField,
+    "updated_at": TimestampField,
 }
