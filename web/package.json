@@ -23,6 +23,7 @@
     "build": "next build",
     "build:docker": "next build && node scripts/optimize-standalone.js",
     "start": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && cross-env PORT=$npm_config_port HOSTNAME=$npm_config_host node .next/standalone/server.js",
+    "startx": "xcopy /E /I /Y .next\\static .next\\standalone\\.next\\static && xcopy /E /I /Y public .next\\standalone\\public && cross-env PORT=$npm_config_port HOSTNAME=$npm_config_host node .next\\standalone\\server.js",
     "lint": "eslint --concurrency=auto --cache --cache-location node_modules/.cache/eslint/.eslint-cache",
     "lint:fix": "eslint --concurrency=auto --cache --cache-location node_modules/.cache/eslint/.eslint-cache --fix",
     "lint:quiet": "eslint --concurrency=auto --cache --cache-location node_modules/.cache/eslint/.eslint-cache --quiet",
